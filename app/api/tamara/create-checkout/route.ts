@@ -86,17 +86,17 @@ export async function POST(request: NextRequest) {
       },
     }
 
+    // Try with proper User-Agent and headers to bypass Cloudflare
     const response = await fetch(`${TAMARA_API_URL}/checkout`, {
       method: "POST",
-      // Avoid headers that can trigger Cloudflare bot checks in sandbox
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: `Bearer ${TAMARA_API_KEY}`,
+        "User-Agent": "TamaraAPI/1.0",
+        "Accept-Language": "en-US,en;q=0.9",
       },
       body: JSON.stringify(tamaraPayload),
-      // Disable automatic decompression hints
-      // Next.js/Edge runtime handles compression transparently
     })
 
     const responseText = await response.text()
