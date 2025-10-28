@@ -64,6 +64,8 @@ export default function InvoiceGenerator() {
     setLoading(true)
 
     try {
+      console.log("Submitting invoice...", { customer, items, total: calculateTotal() })
+      
       const response = await fetch("/api/tamara/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,7 +76,9 @@ export default function InvoiceGenerator() {
         }),
       })
 
+      console.log("Response status:", response.status)
       const data = await response.json()
+      console.log("Response data:", data)
 
       if (data.cloudflare_error) {
         toast({
