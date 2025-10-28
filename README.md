@@ -1,6 +1,6 @@
 # Tamara Invoice Generator
 
-A Next.js application for generating invoices with Tamara Buy Now, Pay Later integration.
+A modern Next.js application for generating invoices with Tamara Buy Now, Pay Later integration.
 
 ## Features
 

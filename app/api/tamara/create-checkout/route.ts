@@ -86,27 +86,20 @@ export async function POST(request: NextRequest) {
       },
     }
 
-    const { request: undiciRequest } = await import("undici")
-
-    const response = await undiciRequest(`${TAMARA_API_URL}/checkout`, {
+    const response = await fetch(`${TAMARA_API_URL}/checkout`, {
       method: "POST",
+      // Avoid headers that can trigger Cloudflare bot checks in sandbox
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: `Bearer ${TAMARA_API_KEY}`,
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        Origin: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3001",
-        Referer: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3001"}/`,
-        "Cache-Control": "no-cache",
-        Pragma: "no-cache",
       },
       body: JSON.stringify(tamaraPayload),
+      // Disable automatic decompression hints
+      // Next.js/Edge runtime handles compression transparently
     })
 
-    const responseText = await response.body.text()
+    const responseText = await response.text()
 
     let data
 
@@ -124,11 +117,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (response.statusCode !== 200 && response.statusCode !== 201) {
+    if (!response.ok) {
       console.error("Tamara API Error:", data)
       return NextResponse.json(
         { error: data.message || "Failed to create checkout", details: data },
-        { status: response.statusCode },
+        { status: response.status },
       )
     }
 
