@@ -61,10 +61,22 @@ export default function InvoiceGenerator() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("Form submitted!")
     setLoading(true)
 
     try {
-      console.log("Submitting invoice...", { customer, items, total: calculateTotal() })
+      const totalAmount = calculateTotal()
+      console.log("Submitting invoice...", { customer, items, total: totalAmount })
+      
+      if (totalAmount === 0) {
+        toast({
+          title: "Invalid Amount",
+          description: "Please add items with a total amount greater than 0",
+          variant: "destructive",
+        })
+        setLoading(false)
+        return
+      }
       
       const response = await fetch("/api/tamara/create-checkout", {
         method: "POST",
