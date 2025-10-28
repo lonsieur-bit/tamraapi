@@ -2,8 +2,8 @@ import { type NextRequest, NextResponse } from "next/server"
 
 const TAMARA_API_KEY = process.env.TAMARA_API_KEY
 const TAMARA_MERCHANT_ID = process.env.TAMARA_MERCHANT_ID
-// Try production API instead of sandbox
-const TAMARA_API_URL = process.env.TAMARA_API_URL || "https://api.tamara.co"
+const TAMARA_PUBLIC_KEY = process.env.TAMARA_PUBLIC_KEY || "3cdaf9b8-dc7e-4842-b178-757c8ae29485"
+const TAMARA_API_URL = "https://api-sandbox.tamara.co"
 
 export async function POST(request: NextRequest) {
   try {
