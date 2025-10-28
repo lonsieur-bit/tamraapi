@@ -88,17 +88,22 @@ export async function POST(request: NextRequest) {
     }
 
     // Try with proper User-Agent and headers to bypass Cloudflare
+    console.log("Calling Tamara API:", TAMARA_API_URL)
+    console.log("Merchant ID:", TAMARA_MERCHANT_ID)
+    console.log("Payload:", JSON.stringify(tamaraPayload, null, 2))
+    
     const response = await fetch(`${TAMARA_API_URL}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: `Bearer ${TAMARA_API_KEY}`,
-        "User-Agent": "TamaraAPI/1.0",
-        "Accept-Language": "en-US,en;q=0.9",
       },
       body: JSON.stringify(tamaraPayload),
     })
+    
+    console.log("Response status:", response.status)
+    console.log("Response headers:", Object.fromEntries(response.headers.entries()))
 
     const responseText = await response.text()
 
