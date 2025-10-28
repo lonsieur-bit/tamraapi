@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  output: 'standalone',
   // Allow API routes to bypass Cloudflare restrictions
   async headers() {
     return [
